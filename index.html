@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html><head>
+<title>language proposal: dave</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<div id="content">
+  <h1>Language proposal: dave</h1>
+  <p>I've been a long time user of PHP, but have issues with it <a href="http://plasmasturm.org/log/393/">for</a> <a href="https://maurus.net/resources/programming-languages/php/">obvious</a> <a href="http://www.bitstorm.org/edwin/en/php/">reasons</a>. After extensively using Node.js and Python as well as a fair amount of research into other languages I've decided to give writing my own a shot.</p>
+  
+  <p>I do not plan on brining in much new, but rather plan on combining proven patterns from popular and well designed languages. The string encoding syntax is perhaps the single exception, but that was one of the driving forces behind this language. I feel like it will easily improve the hassle that encoding is, and fix a massive security issue (just as automatic strings defeated buffer overflows).</p>
+
+  <p>The <a href="http://julialang.org/manual/introduction/">principles which guide Julia</a> gave me a very clear picture of their language design. Along similar lines:
+    <ul>
+      <li>Free and open source (MIT licensed)</li>
+      <li>Built-in string encoding (html, url, sql, ...)</li>
+      <li>Scoping from javascript (single user thread)</li>
+      <li>Function parameters from python (named, list, dict arguments)</li>
+      <li>Context managers and 'with' from python</li>
+      <li>Curly-brace language, but no-semicolons</li>
+      <li>Automatic lazy network/file access for easy pipelining</li>
+      <li>Willingness to drop backwards compatibility (python 3)</li>
+    </ul>
+  </p>
+
+  <p>The easiest way I can think of to explain the language is with some example programs written in it:
+
+<pre><span class="comment">/* hello.dave: A standard hello world program */</span>
+
+<span class="keyword">print </span><span class="string">"Hello, world!"</span>
+</pre>
+
+<pre><span class="comment">/* encoding.dave: A quick look at dave's string encoding */</span>
+<span class="keyword">var</span> heart = '&lt;3',
+    bobby = "Robert') DROP TABLE Students; --",
+    hello = 'Hello, world!"
+
+<span class="keyword">print</span> heart
+<span class="comment">// &lt;3</span>
+
+<span class="keyword">print</span> <span class="string">"<span class="variable">$heart</span>"</span>
+<span class="comment">// &lt;3</span>
+
+<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"<span class="variable">$heart</span>"</span>
+<span class="comment">// &amp;lt;3</span>
+
+<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"&lt;strong&gt;<span class="variable">$heart</span>&lt;/strong&gt;"</span>
+<span class="comment">// &lt;strong&gt;&amp;lt;3&lt;/strong&gt;</span>
+
+<span class="keyword">print</span> <span class="encoding">sql:</span><span class="string">"SELECT * FROM Students WHERE name=<span class="variable">$bobby</span>"</span>
+<span class="comment">// SELECT * FROM Students WHERE name='Robert\') DROP TABLE Students; --'</span>
+
+<span class="keyword">print</span> <span class="encoding">url:</span><span class="string">"http://cowsay.morecode.org/say?format=text&amp;message=<span class="variable">$hello</span>"</span>
+<span class="comment">// http://cowsay.morecode.org/say?format=text&amp;message=Hello%2C+world%21</span>
+
+<span class="keyword">var</span> boldheart = <span class="encoding">html:</span><span class="string">"&lt;strong&gt;<span class="variable">${"&lt;3"}</span>&lt;/strong&gt;"</span>
+<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"I <span class="variable">$boldheart</span> built-in encodings -- <span class="variable">$heart</span>."</span>
+<span class="comment">// I &lt;strong&gt;&amp;lt;3&lt;/strong&gt; built-in encodings -- &amp;lt;3.</span>
+
+<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"Double encoded: <span class="variable">${"$boldheart"}</span>."</span>
+<span class="comment">// Double encoded: &amp;lt;strong&amp;gt;&amp;amp;lt;3&amp;lt;/strong&amp;gt;</span>
+</pre>
+<pre><span class="comment">/* functions.dave: A little like python */</span>
+<span class="comment">// Using a map just to demonstrate its capability</span>
+<span class="keyword">var</span> toUpperCase = {<span class="string">'a'</span>:<span class="string">'A'</span>,<span class="string">'b'</span>:<span class="string">'B'</span>,<span class="string">'c'</span>:<span class="string">'C'</span>,<span class="string">'d'</span>:<span class="string">'D'</span>,<span class="string">'e'</span>:<span class="string">'E'</span>,<span class="string">'f'</span>:<span class="string">'F'</span>,<span class="string">'g'</span>:<span class="string">'G'</span>,<span class="string">'h'</span>:<span class="string">'H'</span>,<span class="string">'i'</span>:<span class="string">'I'</span>,
+          <span class="string">'j'</span>:<span class="string">'J'</span>,<span class="string">'k'</span>:<span class="string">'K'</span>,<span class="string">'l'</span>:<span class="string">'L'</span>,<span class="string">'m'</span>:<span class="string">'M'</span>,<span class="string">'n'</span>:<span class="string">'N'</span>,<span class="string">'o'</span>:<span class="string">'O'</span>,<span class="string">'p'</span>:<span class="string">'P'</span>,<span class="string">'q'</span>:<span class="string">'Q'</span>,<span class="string">'r'</span>:<span class="string">'R'</span>,<span class="string">'s'</span>:<span class="string">'S'</span>,
+          <span class="string">'t'</span>:<span class="string">'T'</span>,<span class="string">'u'</span>:<span class="string">'U'</span>,<span class="string">'v'</span>:<span class="string">'V'</span>,<span class="string">'w'</span>:<span class="string">'W'</span>,<span class="string">'x'</span>:<span class="string">'X'</span>,<span class="string">'y'</span>:<span class="string">'Y'</span>,<span class="string">'z'</span>:<span class="string">'Z'</span>}
+
+<span class="keyword">var</span> toLowerCase = {v:k for k,v in toUpperCase.items}
+
+<span class="keyword">function</span> transform(letter, map) {
+  <span class="comment">// Non-existant entries are === undefined, similar to javascript</span>
+  <span class="comment">// &lt;a&gt; ?: &lt;b&gt; is equivalent to &lt;a&gt; ? &lt;a&gt; : &lt;b&gt;</span>
+  <span class="keyword">return</span> map[letter] ?: letter
+}
+
+<span class="keyword">function</span> join(seperator, *items) {
+  <span class="keyword">if</span> (!items) <span class="keyword">return</span> <span class="string">''</span>
+  result = items.pop(0)
+  <span class="keyword">for</span> item <span class="keyword">in</span> items: result += <span class="string">"<span class="variable">$seperator</span><span class="variable">$item</span>"</span>
+  <span class="keyword">return</span> result
+}
+
+<span class="keyword">function</span> capitilise(string) {
+  <span class="keyword">return</span> join('', transform(string[:1], map=toUpperCase),
+                 *[transform(c, map=toLowerCase) <span class="keyword">for</span> c <span class="keyword">in</span> string[1:]])
+}
+
+params = {'string': 'hello, world!'}
+<span class="keyword">print</span> capitilise(*params)
+</pre>
+  
+
+<pre><span class="comment">/* database.dave: An example web server with blocking database connections */</span>
+
+<span class="keyword">var</span> <span class="variable">redis</span> = import(<span class="string">'redis'</span>).Redis(),
+    <span class="variable">MySQL</span> = import(<span class="string">'mysql'</span>).MySQL,
+    <span class="variable">http</span> = import(<span class="string">'http'</span>),
+    <span class="variable">url</span> = import(<span class="string">'url'</span>),
+    <span class="variable">ini</span> = import(<span class="string">'ini'</span>)
+
+<span class="keyword">var</span> config
+<span class="keyword">with</span> file('config.ini') <span class="keyword">as</span> f {
+  config = ini.parse(f.read())
+}
+<span class="keyword">var</span> db = MySQL(*config['mysql'])
+
+<span class="variable">http</span>.createServer(<span class="variable">handleResponse</span>).listen(<span class="number">1337</span>, <span class="string">'127.0.0.1'</span>)
+
+
+<span class="keyword">function</span> handleResponse(req, res) {
+  <span class="keyword">var</span> pageviews
+  <span class="keyword">try</span> {
+    <span class="comment">// The following three lines will return instantly, and will only block once the values are used in output</span>
+    <span class="keyword">var </span><span class="variable">info</span> = db.fetchSingle(<span class="encoding">sql:</span><span class="string">"SELECT * FROM person WHERE name=<span class="variable">${url.parse(req.url).query.name}</span>"</span>)
+    <span class="keyword">var </span><span class="variable">pageviewKey</span> = <span class="string">"count-pageviews:<span class="variable">${info.id}</span>"</span> 
+    pageviews = redis.incr(<span class="variable">$pageviewKey</span>)
+  } <span class="keyword">catch</span> (MySQL.NoSingleException e) {
+    <span class="variable">res</span>.end(<span class="encoding">html</span>:<span class="string">"Sorry, we couldn't find you in our database :("</span>)
+    <span class="keyword">return</span>
+  }
+
+  <span class="comment">// As we attempt to send the string the interpreter will wait for the redis query to finish</span>
+  <span class="comment">// The MySQL command would have blocked before as its exception was caught above</span>
+  <span class="variable">res</span>.end(<span class="encoding">html</span>:<span class="string">"&lt;h1&gt;Hey <span class="variable">${info.name}</span>&lt;/h1&gt;"</span>:
+         <span class="string">"&lt;p&gt;According to our database you are &lt;strong&gt;<span class="variable">${info.age}</span>&lt;/strong&gt; years old.&lt;/p&gt;"</span>
+         <span class="string">"&lt;p&gt;(you have viewed at this <span class="variable">$pageviews</span> times)&lt;/p&gt;"</span>)
+}
+
+</pre>
+
+<pre><span class="comment">/* pipeline.dave: fetch a lot of data from redis and then process it later */</span>
+<span class="keyword">var</span> <span class="variable">redis</span> = import(<span class="string">'redis'</span>).Redis()
+    <span class="variable">_</span> = import(<span class="string">'mystringlib'</span>)
+
+values = []
+<span class="keyword">for</span> k <span class="keyword">in</span> <span class="keyword">range</span>(1000) {
+  values.push(redis.get("${_.sprintf('count-%04d', k)}"))
+}
+
+<span class="comment">// We'll get to this point before we have retrieved the data from redis</span>
+<span class="keyword">print</span> values.reduce(<span class="keyword">function</span>(sum, x) { <span class="keyword">return</span> sum+x; }, 0)
+</pre>
+</p>
+
+</div>
+
+</body>
+</html>
+
