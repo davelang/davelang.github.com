@@ -17,11 +17,14 @@
       <li>Scoping from javascript (single user thread)</li>
       <li>Function parameters from python (named, list, dict arguments)</li>
       <li>Context managers and 'with' from python</li>
+      <li>Heredoc and nowdoc from php</li>
       <li>Curly-brace language, but no-semicolons</li>
+      <li>Automatic big number switching (python)</li>
       <li>Automatic lazy network/file access for easy pipelining</li>
       <li>Willingness to drop backwards compatibility (python 3)</li>
     </ul>
   </p>
+  <p><em>Note: </em>I know that many of the languages above may not be the original source of each idea/feature. Feel free to issue pull requests if you have the urge to correct them.</p>
 
   <p>The easiest way I can think of to explain the language is with some example programs written in it:
 
@@ -33,7 +36,8 @@
 <pre><span class="comment">/* encoding.dave: A quick look at dave's string encoding */</span>
 <span class="keyword">var</span> heart = <span class="string">'&lt;3'</span>,
     bobby = <span class="string">"Robert') DROP TABLE Students; --"</span>,
-    hello = <span class="string">"Hello, world!"</span> 
+    hello = <span class="string">"Hello, world!"</span>,
+    title = <span class="string">"Language proposal &gt; dave"</span> 
 
 <span class="keyword">print</span> heart
 <span class="comment">// &lt;3</span>
@@ -59,6 +63,22 @@
 
 <span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"Double encoded: <span class="variable">${"$boldheart"}</span>."</span>
 <span class="comment">// Double encoded: &amp;lt;strong&amp;gt;&amp;amp;lt;3&amp;lt;/strong&amp;gt;</span>
+
+<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">&lt;&lt;&lt;EOF
+&lt;html&gt;&lt;head&gt;
+  &lt;title&gt;<span class="variable">$title</span>&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+  &lt;h1&gt;<span class="variable">$title</span>&lt;/h1&gt;
+&lt;/body&gt;&lt;html&gt;
+EOF</span>
+<span class="comment">/* 
+&lt;html&gt;&lt;head&gt;
+  &lt;title&gt;Language proposal &amp;gt; dave&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+  &lt;h1&gt;Language proposal &amp;gt; dave&lt;/h1&gt;
+&lt;/body&gt;&lt;html&gt;
+*/
+</span>
 </pre>
 <pre><span class="comment">/* functions.dave: A little like python */</span>
 <span class="comment">// Using a map just to demonstrate its capability</span>
@@ -130,7 +150,7 @@ params = {<span class="string">'string'</span>: <span class="string">'hello, wor
 </pre>
 
 <pre><span class="comment">/* pipeline.dave: fetch a lot of data from redis and then process it later */</span>
-<span class="keyword">var</span> <span class="variable">redis</span> = import(<span class="string">'redis'</span>).Redis()
+<span class="keyword">var</span> <span class="variable">redis</span> = import(<span class="string">'redis'</span>).Redis(),
     <span class="variable">_</span> = import(<span class="string">'mystringlib'</span>)
 
 values = []
@@ -143,8 +163,10 @@ values = []
 </pre>
 </p>
 
+<h2>More information:</h2>
+<p>For discussions about creating languages and the like please look to the Hacker News post (), and for anything related to the actual serious development of the language please leave a message on the google group (<a href="https://groups.google.com/forum/#!forum/davelang">https://groups.google.com/forum/#!forum/davelang</a>)</p>
 </div>
 
 </body>
 </html>
-
+EOF;
