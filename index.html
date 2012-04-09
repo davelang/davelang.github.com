@@ -31,9 +31,9 @@
 </pre>
 
 <pre><span class="comment">/* encoding.dave: A quick look at dave's string encoding */</span>
-<span class="keyword">var</span> heart = '&lt;3',
-    bobby = "Robert') DROP TABLE Students; --",
-    hello = 'Hello, world!"
+<span class="keyword">var</span> heart = <span class="string">'&lt;3'</span>,
+    bobby = <span class="string">"Robert') DROP TABLE Students; --"</span>,
+    hello = <span class="string">"Hello, world!"</span> 
 
 <span class="keyword">print</span> heart
 <span class="comment">// &lt;3</span>
@@ -82,11 +82,11 @@
 }
 
 <span class="keyword">function</span> capitilise(string) {
-  <span class="keyword">return</span> join('', transform(string[:1], map=toUpperCase),
+  <span class="keyword">return</span> join(<span class="string">''</span>, transform(string[:1], map=toUpperCase),
                  *[transform(c, map=toLowerCase) <span class="keyword">for</span> c <span class="keyword">in</span> string[1:]])
 }
 
-params = {'string': 'hello, world!'}
+params = {<span class="string">'string'</span>: <span class="string">'hello, world!'</span>}
 <span class="keyword">print</span> capitilise(*params)
 </pre>
   
@@ -100,10 +100,10 @@ params = {'string': 'hello, world!'}
     <span class="variable">ini</span> = import(<span class="string">'ini'</span>)
 
 <span class="keyword">var</span> config
-<span class="keyword">with</span> file('config.ini') <span class="keyword">as</span> f {
+<span class="keyword">with</span> file(<span class="string">'config.ini'</span>) <span class="keyword">as</span> f {
   config = ini.parse(f.read())
 }
-<span class="keyword">var</span> db = MySQL(*config['mysql'])
+<span class="keyword">var</span> db = MySQL(*config[<span class="string">'mysql'</span>])
 
 <span class="variable">http</span>.createServer(<span class="variable">handleResponse</span>).listen(<span class="number">1337</span>, <span class="string">'127.0.0.1'</span>)
 
@@ -135,7 +135,7 @@ params = {'string': 'hello, world!'}
 
 values = []
 <span class="keyword">for</span> k <span class="keyword">in</span> <span class="keyword">range</span>(1000) {
-  values.push(redis.get("${_.sprintf('count-%04d', k)}"))
+  values.push(redis.get(<span class="string">"<span class="variable">${_.sprintf('count-%04d', k)}</span>"</span>))
 }
 
 <span class="comment">// We'll get to this point before we have retrieved the data from redis</span>
