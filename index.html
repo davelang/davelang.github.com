@@ -2,6 +2,7 @@
 <html><head>
 <title>language proposal: dave</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 <body>
 <div id="content">
@@ -110,7 +111,25 @@ params = {<span class="string">'string'</span>: <span class="string">'hello, wor
 <span class="keyword">print</span> capitilise(*params)
 </pre>
   
+<pre><span class="comment">/* math.dave: A simple example of math capabilities */</span>
+<span class="keyword">var</span> <span class="variable">math</span> = import(<span class="string">'math'</span>),
+    <span class="variable">π</span> = math.pi
 
+<span class="keyword">print</span> 5**99
+<span class="comment">// 1577721810442023610823457130565572459346412870218046009540557861328125</span>
+
+<span class="keyword">print</span> type(5*99)
+<span class="comment">// int</span>
+
+<span class="keyword">print</span> math.sin(π/2)
+<span class="comment">// 1</span>
+
+<span class="keyword">print</span> type(math.sin(π/2))
+<span class="comment">// float</span>
+
+<span class="keyword">print</span> math.sin(π/4)
+<span class="comment">// 0.7071067811865475</span>
+</pre>
 <pre><span class="comment">/* database.dave: An example web server with blocking database connections */</span>
 
 <span class="keyword">var</span> <span class="variable">redis</span> = import(<span class="string">'redis'</span>).Redis(),
