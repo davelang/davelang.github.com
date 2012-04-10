@@ -98,7 +98,7 @@ EOF</span>
 <span class="keyword">function</span> join(seperator, *items) {
   <span class="keyword">if</span> (!items) <span class="keyword">return</span> <span class="string">''</span>
   result = items.pop(0)
-  <span class="keyword">for</span> item <span class="keyword">in</span> items: result += <span class="string">"<span class="variable">$seperator</span><span class="variable">$item</span>"</span>
+  <span class="keyword">for</span> (item <span class="keyword">in</span> items) result += <span class="string">"<span class="variable">$seperator</span><span class="variable">$item</span>"</span>
   <span class="keyword">return</span> result
 }
 
@@ -173,7 +173,7 @@ params = {<span class="string">'string'</span>: <span class="string">'hello, wor
     <span class="variable">_</span> = import(<span class="string">'mystringlib'</span>)
 
 values = []
-<span class="keyword">for</span> k <span class="keyword">in</span> <span class="keyword">range</span>(1000) {
+<span class="keyword">for</span> (k <span class="keyword">in</span> <span class="keyword">range</span>(1000)) {
   values.push(redis.get(<span class="string">"<span class="variable">${_.sprintf('count-%04d', k)}</span>"</span>))
 }
 
