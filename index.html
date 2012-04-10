@@ -18,7 +18,6 @@
       <li>Scoping from javascript (single user thread)</li>
       <li>Function parameters from python (named, list, dict arguments)</li>
       <li>Context managers and 'with' from python</li>
-      <li>Heredoc and nowdoc from php</li>
       <li>Curly-brace language, but no-semicolons</li>
       <li>Automatic big number switching (python)</li>
       <li>Automatic lazy network/file access for easy pipelining</li>
@@ -65,13 +64,13 @@
 <span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"Double encoded: <span class="variable">${"$boldheart"}</span>."</span>
 <span class="comment">// Double encoded: &amp;lt;strong&amp;gt;&amp;amp;lt;3&amp;lt;/strong&amp;gt;</span>
 
-<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">&lt;&lt;&lt;EOF
+<span class="keyword">print</span> <span class="encoding">html:</span><span class="string">"""
 &lt;html&gt;&lt;head&gt;
   &lt;title&gt;<span class="variable">$title</span>&lt;/title&gt;
 &lt;/head&gt;&lt;body&gt;
   &lt;h1&gt;<span class="variable">$title</span>&lt;/h1&gt;
 &lt;/body&gt;&lt;html&gt;
-EOF</span>
+"""</span>
 <span class="comment">/* 
 &lt;html&gt;&lt;head&gt;
   &lt;title&gt;Language proposal &amp;gt; dave&lt;/title&gt;
@@ -188,4 +187,3 @@ values = []
 
 </body>
 </html>
-EOF;
